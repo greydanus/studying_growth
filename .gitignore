@@ -1,0 +1,12 @@
+# Studying Growth with Neural CA | 2021
+# Sam Greydanus
+
+.DS_Store
+*.egg-info
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+.pytest_cache
+*.tar
+*.zip
+*.pkl
+__pycache__
