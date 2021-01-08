@@ -31,10 +31,12 @@ class CA(nn.Module):
   def __init__(self, state_dim=16, hidden_dim=128):
     super(CA, self).__init__()
     self.state_dim = state_dim
-    self.update = nn.Sequential(nn.Conv2d(state_dim, 3*state_dim, 3, padding=1, groups=state_dim, bias=False),  # perceive
-                                nn.Conv2d(3*state_dim, hidden_dim, 1),  # process perceptual inputs
-                                nn.ReLU(),                         # nonlinearity
-                                nn.Conv2d(hidden_dim, state_dim, 1))    # output a residual update
+    self.update = nn.Sequential(
+                      nn.Conv2d(state_dim, 3*state_dim, 3,padding=1, groups=state_dim, bias=False), # perceive
+                      nn.Conv2d(3*state_dim, hidden_dim, 1),  # process perceptual inputs
+                      nn.ReLU(),                              # nonlinearity
+                      nn.Conv2d(hidden_dim, state_dim, 1)     # output a residual update
+                    )
     self.update[-1].weight.data *= 0  # initial residual updates should be close to zero
     
     # First conv layer will use fixed Sobel filters to perceive neighbors
@@ -117,21 +119,23 @@ def train(model, args, data):
 
 # Step 4: organize hyperparameters & keep them in a single location
 
+class ObjectView(object):
+    def __init__(self, d): self.__dict__ = d
 def get_args(as_dict=False):
   arg_dict = {'state_dim': 32,         # first 4 are rgba, rest are latent
               'hidden_dim': 128,
-              'num_steps': [72, 106],
+              'num_steps': [64, 108],
               'pool_size': 1000,       # pool of persistent CAs (defaults are 0 and 1000)
               'batch_size': 8,
               'learning_rate': 2e-3,
               'milestones': [2500, 5000, 7500],   # lr scheduler milestones
               'gamma': 0.2,            # lr scheduler gamma
               'decay': 3e-5,
-              'dropout': 0.1,          # fraction of communications that are dropped
+              'dropout': 0.2,          # fraction of communications that are dropped
               'print_every': 200,
               'total_steps': 10000,
-              'image_name': 'rose',
               'device': 'cuda',        # options are {"cpu", "cuda"}
+              'image_name': 'rose',
               'seed': 42}              # the meaning of life (for these little cells, at least)
   return arg_dict if as_dict else ObjectView(arg_dict)
 
