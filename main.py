@@ -96,8 +96,7 @@ def train(model, args, data):
       perturb = make_circle_masks(args.perturb_n, *init_state.shape[-2:])[:, None, ...]
       input_states[-args.perturb_n:] *= perturb.to(args.device)
 
-    num_steps = args.num_steps[-1] if step % args.print_every == 0 else np.random.randint(*args.num_steps)
-    states = model(input_states, num_steps, args.seed_loc)  # forward pass (set num_steps to max when logging loss)
+    states = model(input_states, np.random.randint(*args.num_steps), args.seed_loc)  # forward pass
     final_rgba = states[-1,:, :4]  # grab rgba channels of last frame
 
     # compute loss and run backward pass
@@ -140,7 +139,7 @@ def get_args(as_dict=False):
               'batch_size': 8,
               'learning_rate': 2e-3,
               'milestones': [3000, 6000, 9000],   # lr scheduler milestones
-              'gamma': 0.2,            # lr scheduler gamma
+              'gamma': 0.2,           # lr scheduler gamma
               'decay': 3e-5,
               'dropout': 0.2,          # fraction of communications that are dropped
               'print_every': 200,
