@@ -70,7 +70,7 @@ def get_seed_location(target_img, image_name, padding=10):
   side = target_img.shape[-2] - 2 * padding
   seed_locs = {'rose': (0.6,0.8), 'daffodil': (0.78, 0.8), 'crocus': (0.42,0.83),
                'marigold': (0.49, 0.83), 'sworm': (0.5,0.5)}
-  loc = seed_locs[args.image_name]
+  loc = seed_locs[image_name]
   return (padding + int(loc[1]*side), padding + int(loc[0]*side))  # set location of seed
 
 def train(model, args, data):
