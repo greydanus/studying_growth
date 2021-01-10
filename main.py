@@ -62,10 +62,6 @@ class CA(nn.Module):
 # Step 3: write a simple training loop that handles the three training modalities described in
 #         "Growing NCA" (distill.pub/2020/growing-ca/): 1) grow 2) persist 3) regenerate
 
-def normalize_grads(model):  # makes training more stable, especially early on
-  for p in model.parameters():
-      p.grad = p.grad / (p.grad.norm() + 1e-8) if p.grad is not None else p.grad
-
 def get_seed_location(target_img, image_name, padding=10):
   side = target_img.shape[-2] - 2 * padding
   seed_locs = {'rose': (0.6,0.8), 'daffodil': (0.78, 0.8), 'crocus': (0.42,0.83),
@@ -73,13 +69,16 @@ def get_seed_location(target_img, image_name, padding=10):
   loc = seed_locs[image_name]
   return (padding + int(loc[1]*side), padding + int(loc[0]*side))  # set location of seed
 
+def normalize_grads(model):  # makes training more stable, especially early on
+  for p in model.parameters():
+      p.grad = p.grad / (p.grad.norm() + 1e-8) if p.grad is not None else p.grad
+
 def train(model, args, data):
   model = model.to(args.device)  # put the model on GPU
   optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.decay)
   scheduler = MultiStepLR(optimizer, milestones=args.milestones, gamma=args.gamma)
 
   target_rgba = torch.Tensor(data['y']).to(args.device)  # put the target image on GPU
-
   init_state = torch.zeros(args.batch_size, args.state_dim, *target_rgba.shape[-2:]).to(args.device)
   init_state[...,3:, args.seed_loc[0], args.seed_loc[1]] = 1  # initially, there is just one cell
   pool = init_state[:1].repeat(args.pool_size,1,1,1).cpu()
@@ -141,9 +140,9 @@ def get_args(as_dict=False):
               'batch_size': 8,
               'learning_rate': 2e-3,
               'milestones': [2500, 5000, 7500],   # lr scheduler milestones
-              'gamma': 0.2,            # lr scheduler gamma
+              'gamma': 0.25,           # lr scheduler gamma
               'decay': 3e-5,
-              'dropout': 0.2,          # fraction of communications that are dropped
+              'dropout': 0.1,          # fraction of communications that are dropped
               'print_every': 200,
               'total_steps': 10000,
               'device': device,        # options are {"cpu", "cuda"}
