@@ -55,7 +55,7 @@ class CA(nn.Module):
       x = x + update_mask * self.update(x)                       # state update!
       x = x * alive_mask_pre * alive_mask(alpha=x[:,3:4])        # a cell is either living or dead
       if seed_loc is not None:
-        x[..., 3, seed_loc[0], seed_loc[1]] = 1.  # this keeps the original seed from ever dying
+        x[..., 3, seed_loc[0], seed_loc[1]] = 1.  # this keeps the original seed from ever dying (very important!)
       frames.append(x)
     return torch.stack(frames) # axes: [N, B, C, H, W] where N is # of steps
 
@@ -95,7 +95,7 @@ def train(model, args, data):
     else:
       input_states = init_state
 
-    states = model(input_states, np.random.randint(*args.num_steps))  # forward pass
+    states = model(input_states, np.random.randint(*args.num_steps), args.seed_loc)  # forward pass
     final_rgba = states[-1,:, :4]  # grab rgba channels of last frame
 
     # compute loss and run backward pass
