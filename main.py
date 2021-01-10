@@ -102,8 +102,7 @@ def train(model, args, data):
     # compute loss and run backward pass
     mses = (target_rgba.unsqueeze(0)-final_rgba).pow(2)
     batch_mses = mses.view(args.batch_size,-1).mean(-1)
-    loss = batch_mses.mean()
-    loss.backward() ; normalize_grads(model)
+    loss = batch_mses.mean() ; loss.backward() ; normalize_grads(model)
     optimizer.step() ; optimizer.zero_grad() ; scheduler.step()
 
     # update the pool (if we have one)
@@ -134,13 +133,13 @@ def get_args(as_dict=False):
   device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
   arg_dict = {'state_dim': 32,         # first 4 are rgba, rest are latent
               'hidden_dim': 128,
-              'num_steps': [72, 108],
+              'num_steps': [64, 108],
               'pool_size': 1000,       # pool of persistent CAs (defaults are 0 and 1000)
               'perturb_n': 0,
               'batch_size': 8,
               'learning_rate': 2e-3,
               'milestones': [3000, 6000, 9000],   # lr scheduler milestones
-              'gamma': 0.25,           # lr scheduler gamma
+              'gamma': 0.2,            # lr scheduler gamma
               'decay': 3e-5,
               'dropout': 0.2,          # fraction of communications that are dropped
               'print_every': 200,
