@@ -8,7 +8,7 @@ import torch.nn as nn
 from torch.optim.lr_scheduler import MultiStepLR
 import time, PIL.Image, io, requests, copy
 
-from .utils import set_seed, to_pickle, from_pickle, ObjectView
+from .utils import set_seed, to_pickle, from_pickle, ObjectView, make_circle_masks
 
 
 # Step 1: Load some data
@@ -54,7 +54,7 @@ class CA(nn.Module):
       x = x + update_mask * self.update(x)                       # state update!
       x = x * alive_mask_pre * alive_mask(alpha=x[:,3:4])        # a cell is either living or dead
       if seed_loc is not None:
-        x[..., 3:, seed_loc[0], seed_loc[1]] = 1.  # this keeps the original seed from dying (very important!)
+        x[..., 3, seed_loc[0], seed_loc[1]] = 1.  # this keeps the original seed from dying (very important!)
       frames.append(x)
     return torch.stack(frames) # axes: [N, B, C, H, W] where N is # of steps
 
@@ -81,7 +81,7 @@ def train(model, args, data):
   target_rgba = torch.Tensor(data['y']).to(args.device)  # put the target image on GPU
 
   init_state = torch.zeros(args.batch_size, args.state_dim, *target_rgba.shape[-2:]).to(args.device)
-  init_state[..., args.seed_loc[0], args.seed_loc[1]] = 1  # initially, there is just one cell
+  init_state[...,3:, args.seed_loc[0], args.seed_loc[1]] = 1  # initially, there is just one cell
   pool = init_state[:1].repeat(args.pool_size,1,1,1).cpu()
   
   results = {'loss':[], 'tprev': [time.time()]}
@@ -93,6 +93,9 @@ def train(model, args, data):
       input_states = pool[pool_ixs].to(args.device)
     else:
       input_states = init_state
+    if args.perturb_n > 0:  # perturb CAs (if desired)
+      perturb = make_circle_masks(args.perturb_n, *init_state.shape[-2:])[:, None, ...]
+      input_states[-args.perturb_n:] *= perturb.to(args.device)
 
     states = model(input_states, np.random.randint(*args.num_steps), args.seed_loc)  # forward pass
     final_rgba = states[-1,:, :4]  # grab rgba channels of last frame
@@ -134,6 +137,7 @@ def get_args(as_dict=False):
               'hidden_dim': 128,
               'num_steps': [72, 108],
               'pool_size': 1000,       # pool of persistent CAs (defaults are 0 and 1000)
+              'perturb_n': 0,
               'batch_size': 8,
               'learning_rate': 2e-3,
               'milestones': [2500, 5000, 7500],   # lr scheduler milestones
@@ -158,7 +162,7 @@ if __name__ == '__main__':
   args = get_args() ; set_seed(args.seed)                    # instantiate args & make reproducible
   model = CA(args.state_dim, args.hidden_dim, args.dropout)  # instantiate the NCA model
   data = get_dataset(args.image_name, args.padding)
-  args.seed_loc = get_seed_location(data['y'], args.image_name, args.padding)
+  args.seed_loc = get_seed_location(data['y'], args.image_name, args.padding)  # not ideal, we but have to do this
   results = train(model, args, data)                         # train model
 
   to_pickle(results, path=args.project_dir + '{}.pkl'.format(args.image_name))

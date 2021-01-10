@@ -8,6 +8,17 @@ import matplotlib.pyplot as plt
 from celluloid import Camera
 
 
+### Use this function for making masks that perturb the system
+
+def make_circle_masks(n, h, w):
+  x = torch.linspace(-1.0, 1.0, w)[None, None, :]
+  y = torch.linspace(-1.0, 1.0, h)[None, :, None]
+  center = torch.rand(2, n, 1, 1)-.5
+  r = 0.3 * torch.rand(n, 1, 1) + 0.1
+  x, y = (x-center[0])/r, (y-center[1])/r
+  return 1-(x*x+y*y < 1.0).float()  # mask is OFF in circle
+
+
 ### Generic training & IO tools
 
 def set_seed(seed=0):
