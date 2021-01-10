@@ -139,12 +139,12 @@ def get_args(as_dict=False):
               'perturb_n': 0,
               'batch_size': 8,
               'learning_rate': 2e-3,
-              'milestones': [2500, 5000, 7500],   # lr scheduler milestones
+              'milestones': [3000, 6000, 9000],   # lr scheduler milestones
               'gamma': 0.25,           # lr scheduler gamma
               'decay': 3e-5,
-              'dropout': 0.1,          # fraction of communications that are dropped
+              'dropout': 0.2,          # fraction of communications that are dropped
               'print_every': 200,
-              'total_steps': 10000,
+              'total_steps': 12000,
               'device': device,        # options are {"cpu", "cuda"}
               'padding': 10,
               'image_name': 'rose',
