@@ -3,8 +3,7 @@
 
 import numpy as np
 import torch
-import random
-import pickle
+import random, pickle
 import matplotlib.pyplot as plt
 from celluloid import Camera
 

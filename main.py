@@ -1,14 +1,12 @@
 # Studying Growth | 2021
 # Sam Greydanus
 
-import autograd
-import autograd.numpy as np
-import numpy as npo
-
-import time
-import scipy
-import scipy.ndimage
+import numpy as np
 import matplotlib.pyplot as plt
+import torch
+import torch.nn as nn
+from torch.optim.lr_scheduler import MultiStepLR
+import time, PIL.Image, io, requests, copy
 
 from .utils import set_seed, to_pickle, from_pickle, ObjectView
 
@@ -28,9 +26,10 @@ def get_dataset(image_name, k=PADDING):
 
 # Step 2: Implement Neural Cellular Automata as a PyTorch module
 class CA(nn.Module):
-  def __init__(self, state_dim=16, hidden_dim=128):
+  def __init__(self, state_dim=16, hidden_dim=128, dropout=0):
     super(CA, self).__init__()
     self.state_dim = state_dim
+    self.dropout = dropout
     self.update = nn.Sequential(
                       nn.Conv2d(state_dim, 3*state_dim, 3,padding=1, groups=state_dim, bias=False), # perceive
                       nn.Conv2d(3*state_dim, hidden_dim, 1),  # process perceptual inputs
@@ -40,22 +39,23 @@ class CA(nn.Module):
     self.update[-1].weight.data *= 0  # initial residual updates should be close to zero
     
     # First conv layer will use fixed Sobel filters to perceive neighbors
-    identity = np.outer([0, 1, 0], [0, 1, 0])       # identity filter
-    dx = np.outer([1, 2, 1], [-1, 0, 1]) / 8.0      # Sobel x filter
-    kernel = np.stack([identity, dx, dx.T], axis=0) # stack (identity, dx, dy) filters
-    kernel = np.tile(kernel, [state_dim,1,1])       # tile over channel dimension
+    identity = np.outer([0, 1, 0], [0, 1, 0])        # identity filter
+    dx = np.outer([1, 2, 1], [-1, 0, 1]) / 8.0       # Sobel x filter
+    kernel = np.stack([identity, dx, dx.T], axis=0)  # stack (identity, dx, dy) filters
+    kernel = np.tile(kernel, [state_dim,1,1])        # tile over channel dimension
     self.update[0].weight.data[...] = torch.Tensor(kernel)[:,None,:,:]
     self.update[0].weight.requires_grad = False
   
-  def forward(self, x, num_steps):
+  def forward(self, x, num_steps, seed_loc=None):
     alive_mask = lambda alpha: nn.functional.max_pool2d(alpha, 3, stride=1, padding=1) > 0.1
     frames = []
     for i in range(num_steps):
       alive_mask_pre = alive_mask(alpha=x[:,3:4])
-      update_mask = torch.rand(*x.shape, device=x.device) > args.dropout  # drop some updates to make asynchronous
+      update_mask = torch.rand(*x.shape, device=x.device) > self.dropout  # drop some updates to make asynchronous
       x = x + update_mask * self.update(x)                       # state update!
       x = x * alive_mask_pre * alive_mask(alpha=x[:,3:4])        # a cell is either living or dead
-      x[..., 3, SEED_Y, SEED_X] = 1.  # this keeps the original seed from ever dying
+      if seed_loc is not None:
+        x[..., 3, seed_loc[0], seed_loc[1]] = 1.  # this keeps the original seed from ever dying
       frames.append(x)
     return torch.stack(frames) # axes: [N, B, C, H, W] where N is # of steps
 
@@ -67,14 +67,22 @@ def normalize_grads(model):  # makes training more stable, especially early on
   for p in model.parameters():
       p.grad = p.grad / (p.grad.norm() + 1e-8) if p.grad is not None else p.grad
 
+def get_seed_location(target_img, args):
+  side = target_img.shape[-2]-2*PADDING
+  seed_locs = {'rose': (0.6,0.8), 'daffodil': (0.78, 0.8), 'crocus': (0.42,0.83),
+               'marigold': (0.49, 0.83), 'sworm': (0.5,0.5)}
+  loc = seed_locs[args.image_name]
+  return (PADDING + int(loc[0]*side), PADDING + int(loc[1]*side))  # set location of seed
+
 def train(model, args, data):
   model = model.to(args.device)  # put the model on GPU
   optimizer = torch.optim.Adam(model.parameters(), lr=args.learning_rate, weight_decay=args.decay)
   scheduler = MultiStepLR(optimizer, milestones=args.milestones, gamma=args.gamma)
 
   target_rgba = torch.Tensor(data['y']).to(args.device)  # put the target image on GPU
+
   init_state = torch.zeros(args.batch_size, args.state_dim, *target_rgba.shape[-2:]).to(args.device)
-  init_state[..., SEED_Y, SEED_X] = 1  # initially, there is just one cell
+  init_state[..., args.seed_loc[0], args.seed_loc[1]] = 1  # initially, there is just one cell
   pool = init_state[:1].repeat(args.pool_size,1,1,1).cpu()
   
   results = {'loss':[], 'tprev': [time.time()]}
@@ -122,6 +130,7 @@ def train(model, args, data):
 class ObjectView(object):
     def __init__(self, d): self.__dict__ = d
 def get_args(as_dict=False):
+  device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
   arg_dict = {'state_dim': 32,         # first 4 are rgba, rest are latent
               'hidden_dim': 128,
               'num_steps': [64, 108],
@@ -134,20 +143,23 @@ def get_args(as_dict=False):
               'dropout': 0.2,          # fraction of communications that are dropped
               'print_every': 200,
               'total_steps': 10000,
-              'device': 'cuda',        # options are {"cpu", "cuda"}
+              'device': device,        # options are {"cpu", "cuda"}
               'image_name': 'rose',
+              'project_dir': './',
               'seed': 42}              # the meaning of life (for these little cells, at least)
+  print("Using: ", device)
   return arg_dict if as_dict else ObjectView(arg_dict)
 
 
 # Step 5: optionally, train the model from scratch
 
 if __name__ == '__main__':
-  args = get_args()    # instantiate args
-  set_seed(args.seed)  # make reproducible
-  model = CA(args.state_dim, args.hidden_dim)  # instantiate the NCA model
-  results = train(model, args, data=get_dataset(args.image_name))  # train model
+  args = get_args() ; set_seed(args.seed)                    # instantiate args & make reproducible
+  model = CA(args.state_dim, args.hidden_dim, args.dropout)  # instantiate the NCA model
+  data = get_dataset(args.image_name)
+  args.seed_loc = get_seed_location(data['y'], args)
+  results = train(model, args, data)  # train model
 
-  run_tag = '{}.pkl'.format(image_name)
-  to_pickle(results, path=project_dir + run_tag)
+  to_pickle(results, path=project_dir + '{}.pkl'.format(image_name))
+
 
