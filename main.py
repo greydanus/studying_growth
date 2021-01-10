@@ -51,7 +51,7 @@ class CA(nn.Module):
     frames = []
     for i in range(num_steps):
       alive_mask_pre = alive_mask(alpha=x[:,3:4])
-      update_mask = torch.rand(*x.shape, device=x.device) > self.dropout  # drop some updates to make asynchronous
+      update_mask = torch.rand(*x.shape, device=x.device) > self.dropout  # drop some updates, make asynchronous
       x = x + update_mask * self.update(x)                       # state update!
       x = x * alive_mask_pre * alive_mask(alpha=x[:,3:4])        # a cell is either living or dead
       if seed_loc is not None:
@@ -72,7 +72,7 @@ def get_seed_location(target_img, args):
   seed_locs = {'rose': (0.6,0.8), 'daffodil': (0.78, 0.8), 'crocus': (0.42,0.83),
                'marigold': (0.49, 0.83), 'sworm': (0.5,0.5)}
   loc = seed_locs[args.image_name]
-  return (PADDING + int(loc[0]*side), PADDING + int(loc[1]*side))  # set location of seed
+  return (PADDING + int(loc[1]*side), PADDING + int(loc[0]*side))  # set location of seed
 
 def train(model, args, data):
   model = model.to(args.device)  # put the model on GPU
@@ -158,7 +158,7 @@ if __name__ == '__main__':
   model = CA(args.state_dim, args.hidden_dim, args.dropout)  # instantiate the NCA model
   data = get_dataset(args.image_name)
   args.seed_loc = get_seed_location(data['y'], args)
-  results = train(model, args, data)  # train model
+  results = train(model, args, data)                         # train model
 
   to_pickle(results, path=project_dir + '{}.pkl'.format(image_name))
 
