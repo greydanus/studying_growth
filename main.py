@@ -66,12 +66,12 @@ def normalize_grads(model):  # makes training more stable, especially early on
   for p in model.parameters():
       p.grad = p.grad / (p.grad.norm() + 1e-8) if p.grad is not None else p.grad
 
-def get_seed_location(target_img, args):
-  side = target_img.shape[-2] - 2 * args.padding
+def get_seed_location(target_img, image_name, padding=10):
+  side = target_img.shape[-2] - 2 * padding
   seed_locs = {'rose': (0.6,0.8), 'daffodil': (0.78, 0.8), 'crocus': (0.42,0.83),
                'marigold': (0.49, 0.83), 'sworm': (0.5,0.5)}
-  loc = seed_locs[args.image_name]
-  return (args.padding + int(loc[1]*side), args.padding + int(loc[0]*side))  # set location of seed
+  loc = seed_locs[image_name]
+  return (padding + int(loc[1]*side), padding + int(loc[0]*side))  # set location of seed
 
 def train(model, args, data):
   model = model.to(args.device)  # put the model on GPU
@@ -158,7 +158,7 @@ if __name__ == '__main__':
   args = get_args() ; set_seed(args.seed)                    # instantiate args & make reproducible
   model = CA(args.state_dim, args.hidden_dim, args.dropout)  # instantiate the NCA model
   data = get_dataset(args.image_name, args.padding)
-  args.seed_loc = get_seed_location(data['y'], args)
+  args.seed_loc = get_seed_location(data['y'], args.image_name, args.padding)
   results = train(model, args, data)                         # train model
 
   to_pickle(results, path=args.project_dir + '{}.pkl'.format(args.image_name))
