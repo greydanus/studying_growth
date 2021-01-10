@@ -54,7 +54,7 @@ class CA(nn.Module):
       x = x + update_mask * self.update(x)                       # state update!
       x = x * alive_mask_pre * alive_mask(alpha=x[:,3:4])        # a cell is either living or dead
       if seed_loc is not None:
-        x[..., 3, seed_loc[0], seed_loc[1]] = 1.  # this keeps the original seed from ever dying (very important!)
+        x[..., 3:, seed_loc[0], seed_loc[1]] = 1.  # this keeps the original seed from dying (very important!)
       frames.append(x)
     return torch.stack(frames) # axes: [N, B, C, H, W] where N is # of steps
 
@@ -132,7 +132,7 @@ def get_args(as_dict=False):
   device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
   arg_dict = {'state_dim': 32,         # first 4 are rgba, rest are latent
               'hidden_dim': 128,
-              'num_steps': [64, 108],
+              'num_steps': [72, 108],
               'pool_size': 1000,       # pool of persistent CAs (defaults are 0 and 1000)
               'batch_size': 8,
               'learning_rate': 2e-3,
