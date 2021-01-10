@@ -59,8 +59,9 @@ def to_rgb(x):
   rgb, a = x[..., :3,:,:], x[..., 3:4,:,:].clip(0,1)
   return (1.0-a+rgb).clip(0,1)  # assume rgb premultiplied by alpha
 
-def make_video(frames, path, interval=60, **kwargs):
-  fig = plt.figure(figsize=[3.25, 3.25], dpi=100)
+def make_video(frames, path, interval=60, fig=None, **kwargs):
+  if fig is None:
+    fig = plt.figure(figsize=[3.25, 3.25], dpi=100)
   camera = Camera(fig)
   for i in range(len(frames)):
     fig = plot_img(frames[i], fig=fig, dpi=80)
