@@ -143,7 +143,7 @@ def get_args(as_dict=False):
               'milestones': [2500, 5000, 7500],   # lr scheduler milestones
               'gamma': 0.2,            # lr scheduler gamma
               'decay': 3e-5,
-              'dropout': 0.1,          # fraction of communications that are dropped
+              'dropout': 0.2,          # fraction of communications that are dropped
               'print_every': 200,
               'total_steps': 10000,
               'device': device,        # options are {"cpu", "cuda"}
