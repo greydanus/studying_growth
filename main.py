@@ -154,12 +154,13 @@ def get_args(as_dict=False):
 # Step 5: optionally, train the model from scratch
 
 if __name__ == '__main__':
+  '''Has to be run on a GPU, otherwise it's super slow.'''
   args = get_args() ; set_seed(args.seed)                    # instantiate args & make reproducible
   model = CA(args.state_dim, args.hidden_dim, args.dropout)  # instantiate the NCA model
   data = get_dataset(args.image_name)
   args.seed_loc = get_seed_location(data['y'], args)
   results = train(model, args, data)                         # train model
 
-  to_pickle(results, path=project_dir + '{}.pkl'.format(image_name))
+  to_pickle(results, path=args.project_dir + '{}.pkl'.format(args.image_name))
 
 
