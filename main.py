@@ -13,8 +13,7 @@ from .utils import set_seed, to_pickle, from_pickle, ObjectView
 
 # Step 1: Load some data
 
-PADDING = 10
-def get_dataset(image_name, k=PADDING):
+def get_dataset(image_name, k):
   r = requests.get('https://raw.githubusercontent.com/greydanus/greydanus.github.io'\
                    '/master/files/nca_templates/{}.png'.format(image_name))
   img = PIL.Image.open(io.BytesIO(r.content))  # get image
@@ -68,11 +67,11 @@ def normalize_grads(model):  # makes training more stable, especially early on
       p.grad = p.grad / (p.grad.norm() + 1e-8) if p.grad is not None else p.grad
 
 def get_seed_location(target_img, args):
-  side = target_img.shape[-2]-2*PADDING
+  side = target_img.shape[-2] - 2 * args.padding
   seed_locs = {'rose': (0.6,0.8), 'daffodil': (0.78, 0.8), 'crocus': (0.42,0.83),
                'marigold': (0.49, 0.83), 'sworm': (0.5,0.5)}
   loc = seed_locs[args.image_name]
-  return (PADDING + int(loc[1]*side), PADDING + int(loc[0]*side))  # set location of seed
+  return (args.padding + int(loc[1]*side), args.padding + int(loc[0]*side))  # set location of seed
 
 def train(model, args, data):
   model = model.to(args.device)  # put the model on GPU
@@ -144,6 +143,7 @@ def get_args(as_dict=False):
               'print_every': 200,
               'total_steps': 10000,
               'device': device,        # options are {"cpu", "cuda"}
+              'padding': 10,
               'image_name': 'rose',
               'project_dir': './',
               'seed': 42}              # the meaning of life (for these little cells, at least)
@@ -157,7 +157,7 @@ if __name__ == '__main__':
   '''Has to be run on a GPU, otherwise it's super slow.'''
   args = get_args() ; set_seed(args.seed)                    # instantiate args & make reproducible
   model = CA(args.state_dim, args.hidden_dim, args.dropout)  # instantiate the NCA model
-  data = get_dataset(args.image_name)
+  data = get_dataset(args.image_name, args.padding)
   args.seed_loc = get_seed_location(data['y'], args)
   results = train(model, args, data)                         # train model
 
