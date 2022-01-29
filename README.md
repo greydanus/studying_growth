@@ -8,8 +8,7 @@ Blog: [greydanus.github.io/2021/05/07/studying-growth/](https://greydanus.github
 Run in your browser
 --------
 * Getting started
-  * [Quickstart]()
-  * [Others]()
+  * [[runs] Minimalist, self-contained Neural Cellular Automata Implementation (150 lines of PyTorch)](https://colab.research.google.com/drive/13wCM9OV2JR004zFvh7zPgUxrga8sU4d1)
 
 Overview
 --------
