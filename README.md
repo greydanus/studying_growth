@@ -8,7 +8,7 @@ My blog post: [greydanus.github.io/2021/05/07/studying-growth/](https://greydanu
 
 Run in your browser:
 --------
-### [**Minimalist**](https://colab.research.google.com/drive/13wCM9OV2JR004zFvh7zPgUxrga8sU4d1)
+### [**Minimalist** ✅](https://colab.research.google.com/drive/13wCM9OV2JR004zFvh7zPgUxrga8sU4d1)
 A self-contained Neural Cellular Automata Implementation (150 lines of PyTorch). Reimplements all the methods described in [distill.pub/2020/growing-ca/](https://distill.pub/2020/growing-ca/) using the same hyperparameters. Written in PyTorch instead of TensorFlow.
 
 ![grow_gecko.png](static/grow_gecko.png)
@@ -18,7 +18,7 @@ Grow a 64x64 rose using the code in this GitHub repo. Scales up to 70x70 and 100
 
 ![grow_rose.png](static/grow_rose.png)
 
-### [**Multiclass**](https://colab.research.google.com/drive/1vG7yjOHxejdk_YfvKhASanNs0YvKDO5-)
+### [**Multiclass** ✅](https://colab.research.google.com/drive/1vG7yjOHxejdk_YfvKhASanNs0YvKDO5-)
 Train a neural CA that can grow from a single pixel into to one of three different flowers depending on the initial seed vector. From a dynamical systems perspective, we are training a model that has three different basins of attraction, one for each flower. The initial seed determines which basin the system ultimately converges to. Analogy to DNA (specific flower) vs cellular mechanics (shared across flower species).
 
 ![grow_multiclass.png](static/grow_multiclass.gif)
@@ -33,7 +33,7 @@ Graft a newt's eye onto its belly in homage to [Lazzaro Spallanzani](https://en.
 
 ![newt_graft.png](static/newt_graft.png)
 
-### [**Bone**](https://colab.research.google.com/drive/1qQcztNsqyMLLMB00CVRxc0Pm7ipca0ww?usp=sharing)
+### [**Bone** ✅](https://colab.research.google.com/drive/1qQcztNsqyMLLMB00CVRxc0Pm7ipca0ww?usp=sharing)
 In this experiment we simulate bone growth. Bone growth is interesting because it uses apoptosis (programmed cell death) in order to produce a hollow area in the center of the bone. We see something analogous happen in our model, with a circular tan frontier that gradually expands outwards until it reaches the size of the target image.
 
 ![grow_bone.png](static/grow_bone.png)
