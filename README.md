@@ -1,7 +1,7 @@
 Studying Growth with Neural Cellular Automata
 =======
 
-A minimalist and high-performance implementation of [Neural Cellular Automata](https://distill.pub/2020/growing-ca/). We modify the code in order to reproduce some growth motifs seen in nature.
+A minimalist and aesthetic implementation of [Neural Cellular Automata](https://distill.pub/2020/growing-ca/). We modify the code in order to reproduce some cell growth motifs seen in nature.
 
 Blog post: [greydanus.github.io/2021/05/07/studying-growth/](https://greydanus.github.io/2021/05/07/studying-growth/)
 
@@ -20,7 +20,7 @@ Grow a 64x64 rose using the code in this GitHub repo. Scales up to 70x70 and hun
 ![grow_rose.png](static/grow_rose.png)
 
 ### [**Multiclass** ✅](https://colab.research.google.com/drive/1vG7yjOHxejdk_YfvKhASanNs0YvKDO5-)
-Train a neural CA that can grow from a single pixel into to one of three different flowers depending on the initial seed vector. From a dynamical systems perspective, we are training a model that has three different basins of attraction, one for each flower. The initial seed determines which basin the system ultimately converges to. The initial seed vs. the shared attractor dynamics are analogous to the DNA of a specific flower vs. the shared cellular dynamics across related flower species.
+Train a neural CA that can grow from a seed pixel into one of three different flowers depending on initial value of the seed. From a dynamical systems perspective, we are training a model that has three different basins of attraction, one for each flower. The initial seed determines which basin the system ultimately converges to. The initial seed vs. the shared attractor dynamics are analogous to the DNA of a specific flower vs. the shared cellular dynamics across related flower species.
 
 ![grow_multiclass.png](static/grow_multiclass.gif)
 
