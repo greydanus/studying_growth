@@ -4,6 +4,8 @@ Studying Growth with Neural Cellular Automata
 Inspired by [distill.pub/2020/growing-ca/](https://distill.pub/2020/growing-ca/)
 My blog post: [greydanus.github.io/2021/05/07/studying-growth/](https://greydanus.github.io/2021/05/07/studying-growth/)
 
+This is a minimalist and high-performance implementation of Neural CA as described in [this Distill article](https://distill.pub/2020/growing-ca/). We modify the code and objective in various ways so as to reproduce a few growth motifs seen in nature.
+
 ![overview.png](static/flowers.png)
 
 Run in your browser:
@@ -42,11 +44,6 @@ In this experiment we simulate bone growth. Bone growth is interesting because i
 In this experiment we grow some simply worm shapes. The idea was to study the dynamics of growth from a point. Growth from a point, as opposed to even growth throughout, happens with worms (growth happens just behind the head), hair follicles (growth happens just below the skin), and horns (growth happens just above the skull)
 
 ![grow_worm.png](static/grow_worm.png)
-
-Overview
---------
-
-We rewrite code from [Growing CA Distill](https://distill.pub/2020/growing-ca/) PyTorch and modify it in a few ways so as to model a few different patterns of growth seen in nature.
 
 
 Dependencies
