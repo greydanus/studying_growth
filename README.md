@@ -1,7 +1,7 @@
 Studying Growth with Neural Cellular Automata
 =======
 
-A minimalist and high-performance implementation of Neural CA as described in [this Distill article](https://distill.pub/2020/growing-ca/). We modify the code in various ways so as to reproduce some growth motifs seen in nature.
+A minimalist and high-performance implementation of [Neural Cellular Automata](https://distill.pub/2020/growing-ca/). We modify the code in various ways so as to reproduce some growth motifs seen in nature.
 
 Blog post: [greydanus.github.io/2021/05/07/studying-growth/](https://greydanus.github.io/2021/05/07/studying-growth/)
 
