@@ -16,14 +16,14 @@ Run in your browser:
  * [[looks ok] **Multiclass**: train a single model to grow different flowers (depending on the initial seed)](https://colab.research.google.com/drive/1vG7yjOHxejdk_YfvKhASanNs0YvKDO5-)
 
  ![grow_multiclass.png](static/grow_multiclass.gif)
- * [**Nautilus**: grow a Nautilus shell](https://colab.research.google.com/drive/1DUFL5glyej725r8VAYDZIFrWvpR6a6-0)
+ * [**Nautilus**: grow a Nautilus shell](https://colab.research.google.com/drive/1DUFL5glyej725r8VAYDZIFrWvpR6a6-0) (a fractal growth pattern with rotation and scale invariance)
 
  ![grow_nautilus.png](static/grow_nautilus.gif)
  * **Worms**: grow a worm [(moving reference frame)](https://colab.research.google.com/drive/1wg-PKNwPA5yNzcuyBomZ6IT3Fx2xrewp) [(fixed reference frame)](https://colab.research.google.com/drive/1hE8Vxqsf_PZhSitQP1dSg-K022T3jOkK)
 
  ![grow_worm.png](static/grow_worm.png)
  * [[looks ok] **Newt**: graft a newt's eye onto its belly](https://colab.research.google.com/drive/1fbakmrgkk1y-ZXamH1mKbN1tvkogNrWq) in homage to [Lazzaro Spallanzani](https://en.wikipedia.org/wiki/Lazzaro_Spallanzani)
- 
+
  ![newt_graft.png](static/newt_graft.png)
  * [**Bone**: Osteoblasts and osteoclasts](https://colab.research.google.com/drive/1qQcztNsqyMLLMB00CVRxc0Pm7ipca0ww?usp=sharing)
 
