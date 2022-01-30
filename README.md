@@ -1,4 +1,4 @@
-Studying Growth with Neural CA
+Studying Growth with Neural Cellular Automata
 =======
 
 Blog: [greydanus.github.io/2021/05/07/studying-growth/](https://greydanus.github.io/2021/05/07/studying-growth/)
