@@ -15,12 +15,12 @@ A self-contained Neural Cellular Automata Implementation (150 lines of PyTorch).
 ![grow_gecko.png](static/grow_gecko.png)
 
 ### [**Rose**](https://colab.research.google.com/drive/1TgGN5qjjH6MrMrTcStEkdHO-giEJ4bZr#scrollTo=k-2PCTfGI-pq)
-Grow a 64x64 rose using the code in this GitHub repo. Scales up to 70x70 and 100s of timesteps, which is nearly double the size of the model published in Distill.
+Grow a 64x64 rose using the code in this GitHub repo. Scales up to 70x70 and hundreds of timesteps, which is nearly double the size of the model published in Distill.
 
 ![grow_rose.png](static/grow_rose.png)
 
 ### [**Multiclass** ✅](https://colab.research.google.com/drive/1vG7yjOHxejdk_YfvKhASanNs0YvKDO5-)
-Train a neural CA that can grow from a single pixel into to one of three different flowers depending on the initial seed vector. From a dynamical systems perspective, we are training a model that has three different basins of attraction, one for each flower. The initial seed determines which basin the system ultimately converges to. Analogy to DNA (specific flower) vs cellular mechanics (shared across flower species).
+Train a neural CA that can grow from a single pixel into to one of three different flowers depending on the initial seed vector. From a dynamical systems perspective, we are training a model that has three different basins of attraction, one for each flower. The initial seed determines which basin the system ultimately converges to. The initial seed vs. the shared attractor dynamics are analogous to the DNA of a specific flower vs. the shared cellular dynamics across related flower species.
 
 ![grow_multiclass.png](static/grow_multiclass.gif)
 
