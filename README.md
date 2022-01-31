@@ -1,7 +1,7 @@
 Studying Growth with Neural Cellular Automata
 =======
 
-A minimalist and aesthetic implementation of [Neural Cellular Automata](https://distill.pub/2020/growing-ca/). We modify the code in order to reproduce some cell growth motifs seen in nature.
+We train simulated cells grow into organisms by communicating with their neighbors (see [Neural Cellular Automata](https://distill.pub/2020/growing-ca/)]. Then we use them to study growth patterns found in nature.
 
 Blog post: [greydanus.github.io/2021/05/07/studying-growth/](https://greydanus.github.io/2021/05/07/studying-growth/)
 
@@ -14,7 +14,7 @@ A self-contained Neural Cellular Automata Implementation (150 lines of PyTorch).
 
 ![grow_gecko.png](static/grow_gecko.png)
 
-### [**HD Flowers**](https://colab.research.google.com/drive/1TgGN5qjjH6MrMrTcStEkdHO-giEJ4bZr#scrollTo=k-2PCTfGI-pq)
+### [**HD Flowers** ✅](https://colab.research.google.com/drive/1TgGN5qjjH6MrMrTcStEkdHO-giEJ4bZr#scrollTo=k-2PCTfGI-pq)
 Grow a 64x64 flower using the code in this GitHub repo. Scales up to 70x70 and hundreds of timesteps, which is nearly double the size of the model published in Distill. Flower options include `rose`, `marigold`, and `crocus` as shown in the lead image of this README.
 
 ![grow_rose.png](static/grow_rose.png)
@@ -24,7 +24,7 @@ Train a neural CA that can grow from a seed pixel into one of three different fl
 
 ![grow_multiclass.png](static/grow_multiclass.gif)
 
-### [**Nautilus**](https://colab.research.google.com/drive/1DUFL5glyej725r8VAYDZIFrWvpR6a6-0)
+### [**Nautilus** ✅](https://colab.research.google.com/drive/1DUFL5glyej725r8VAYDZIFrWvpR6a6-0)
 Grow a Nautilus shell. The neural CA learns to implement a fractal growth pattern which is mostly rotation and scale invariant. The technical term for this pattern is _[gnomonic growth](https://www.geogebra.org/m/waR6eVCQ)_.
 
 ![grow_nautilus.png](static/grow_nautilus.gif)
