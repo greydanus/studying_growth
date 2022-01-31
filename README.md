@@ -14,8 +14,8 @@ A self-contained Neural Cellular Automata Implementation (150 lines of PyTorch).
 
 ![grow_gecko.png](static/grow_gecko.png)
 
-### [**Rose**](https://colab.research.google.com/drive/1TgGN5qjjH6MrMrTcStEkdHO-giEJ4bZr#scrollTo=k-2PCTfGI-pq)
-Grow a 64x64 rose using the code in this GitHub repo. Scales up to 70x70 and hundreds of timesteps, which is nearly double the size of the model published in Distill.
+### [**HD Flowers**](https://colab.research.google.com/drive/1TgGN5qjjH6MrMrTcStEkdHO-giEJ4bZr#scrollTo=k-2PCTfGI-pq)
+Grow a 64x64 flower using the code in this GitHub repo. Scales up to 70x70 and hundreds of timesteps, which is nearly double the size of the model published in Distill. Flower options include `rose`, `marigold`, and `crocus` as shown in the lead image of this README.
 
 ![grow_rose.png](static/grow_rose.png)
 
@@ -30,7 +30,7 @@ Grow a Nautilus shell. The neural CA learns to implement a fractal growth patter
 ![grow_nautilus.png](static/grow_nautilus.gif)
 
 ### [**Newt**](https://colab.research.google.com/drive/1fbakmrgkk1y-ZXamH1mKbN1tvkogNrWq)
-Graft a newt's eye onto its belly in homage to [Lazzaro Spallanzani](https://en.wikipedia.org/wiki/Lazzaro_Spallanzani), who did this with real newts in the 1700s.
+We grow an image of a newt and then graft its eye onto its belly during development. We do this in homage to [Hans Spemann](https://en.wikipedia.org/wiki/Hans_Spemann) and his student Hilde, who won a Nobel Prize in 1935 for doing something similar with real newts.
 
 ![newt_graft.png](static/newt_graft.png)
 
@@ -40,7 +40,7 @@ In this experiment we simulate bone growth. Bone growth is interesting because i
 ![grow_bone.png](static/grow_bone.png)
 
 ### [**Worm v1**](https://colab.research.google.com/drive/1wg-PKNwPA5yNzcuyBomZ6IT3Fx2xrewp) [Worm v2](https://colab.research.google.com/drive/1hE8Vxqsf_PZhSitQP1dSg-K022T3jOkK)
-In this experiment we grow some simply worm shapes. The idea was to study the dynamics of growth from a point. Growth from a point, as opposed to even growth throughout, happens with worms (growth happens just behind the head), hair follicles (growth happens just below the skin), and horns (growth happens just above the skull)
+In this experiment we grow some simple worm shapes. The idea was to study the dynamics of growth from a point. Growth from a point happens in tapeworms, hair, and fur whereas growth from at least two growth points occurs in plants.
 
 ![grow_worm.png](static/grow_worm.png)
 
