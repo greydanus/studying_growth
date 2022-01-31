@@ -1,7 +1,7 @@
 Studying Growth with Neural Cellular Automata
 =======
 
-We train simulated cells to grow into organisms by communicating with their neighbors (see [Neural Cellular Automata](https://distill.pub/2020/growing-ca/)]. Then we use them to study growth patterns found in nature.
+We train simulated cells to grow into organisms by communicating with their neighbors (see [Neural Cellular Automata](https://distill.pub/2020/growing-ca/)]. Then we use them to study patterns of growth found in nature.
 
 Blog post: [greydanus.github.io/2021/05/07/studying-growth/](https://greydanus.github.io/2021/05/07/studying-growth/)
 
@@ -29,7 +29,7 @@ Grow a Nautilus shell. The neural CA learns to implement a fractal growth patter
 
 ![grow_nautilus.png](static/grow_nautilus.gif)
 
-### [**Newt**](https://colab.research.google.com/drive/1fbakmrgkk1y-ZXamH1mKbN1tvkogNrWq)
+### [**Newt** ✅](https://colab.research.google.com/drive/1fbakmrgkk1y-ZXamH1mKbN1tvkogNrWq)
 We grow an image of a newt and then graft its eye onto its belly during development. We do this in homage to [Hans Spemann](https://en.wikipedia.org/wiki/Hans_Spemann) and his student Hilde, who won a Nobel Prize in 1935 for doing something similar with real newts.
 
 ![newt_graft.png](static/newt_graft.png)
