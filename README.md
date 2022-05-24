@@ -3,7 +3,7 @@ Studying Growth with Neural Cellular Automata
 
 We train simulated cells to grow into organisms by communicating with their neighbors (see [Neural Cellular Automata](https://distill.pub/2020/growing-ca/)). Then we use them to study patterns of growth found in nature.
 
-Blog post: [greydanus.github.io/2022/05/23/studying-growth/](https://greydanus.github.io/2022/05/23/studying-growth/)
+Blog post: [greydanus.github.io/2022/05/24/studying-growth/](https://greydanus.github.io/2022/05/24/studying-growth/)
 
 ![overview.png](static/flowers.png)
 
